@@ -238,6 +238,12 @@ input { font-family: var(--font); }
   align-items: center;
   gap: 16px;
 }
+.home-player-card.editable {
+  cursor: pointer;
+}
+.home-player-card.editable:active {
+  transform: scale(0.99);
+}
 .home-avatar {
   width: 52px;
   height: 52px;
@@ -250,10 +256,15 @@ input { font-family: var(--font); }
   font-size: 24px;
   flex-shrink: 0;
 }
+.home-avatar.editable,
+.home-player-name.editable {
+  cursor: pointer;
+}
 .home-player-info { flex: 1; }
 .home-player-level { font-size: 12px; color: var(--text3); margin-bottom: 2px; }
 .home-player-name { font-size: 17px; font-weight: 600; }
 .home-player-xp { font-size: 12px; color: var(--accent); margin-top: 2px; }
+.home-player-hint { font-size: 11px; color: var(--text3); margin-top: 6px; }
 .home-xp-bar {
   height: 4px;
   background: var(--bg4);
@@ -801,6 +812,73 @@ input { font-family: var(--font); }
 .hs-time { font-family: var(--font-mono); color: var(--text2); }
 .empty-state { text-align: center; color: var(--text3); padding: 32px; font-size: 14px; }
 
+/* Profile panel */
+.profile-name-input {
+  width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 16px;
+  outline: none;
+}
+.profile-name-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.avatar-option {
+  height: 64px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: transform 0.16s, border-color var(--transition), background var(--transition);
+}
+.avatar-option.active {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  transform: translateY(-2px);
+}
+.avatar-option:active {
+  transform: scale(0.96);
+}
+.profile-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.profile-preview-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: var(--accent-glow);
+  border: 2px solid var(--accent);
+}
+.profile-preview-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.profile-preview-name { font-size: 16px; font-weight: 600; }
+.profile-preview-sub { font-size: 12px; color: var(--text3); }
+
 /* ===== ROUND END MODAL ===== */
 .modal-overlay {
   position: fixed;
@@ -915,13 +993,14 @@ input { font-family: var(--font); }
     <div class="home-title">Kniffel</div>
     <div class="home-subtitle">Würfelglück trifft Strategie</div>
   </div>
-  <div class="home-player-card">
-    <div class="home-avatar">🎲</div>
+  <div class="home-player-card editable" onclick="openProfileEditor()">
+    <div class="home-avatar editable" id="homeAvatar" onclick="openProfileEditor(event)">🎲</div>
     <div class="home-player-info">
       <div class="home-player-level" id="homeLvlLabel">Level <span id="homeLvl">0</span></div>
-      <div class="home-player-name">Spieler</div>
+      <div class="home-player-name editable" id="homePlayerName" onclick="openProfileEditor(event)">Spieler</div>
       <div class="home-player-xp"><span id="homeXP">0</span> XP</div>
       <div class="home-xp-bar"><div class="home-xp-fill" id="homeXPBar" style="width:0%"></div></div>
+      <div class="home-player-hint">Tippe auf Name oder Avatar zum Bearbeiten</div>
     </div>
   </div>
   <div class="home-actions">
@@ -1061,6 +1140,40 @@ input { font-family: var(--font); }
   </div>
 </div>
 
+<!-- PROFILE OVERLAY -->
+<div class="overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-header">
+      <div class="panel-title">Profil bearbeiten</div>
+      <button class="panel-close" onclick="closeProfileEditor()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="panel-body">
+      <div class="setting-group">
+        <div class="setting-group-title">Vorschau</div>
+        <div class="profile-preview">
+          <div class="profile-preview-avatar" id="profilePreviewAvatar">🎲</div>
+          <div class="profile-preview-meta">
+            <div class="profile-preview-name" id="profilePreviewName">Spieler</div>
+            <div class="profile-preview-sub">So erscheint dein Profil im Startbildschirm</div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-group-title">Name</div>
+        <input class="profile-name-input" id="profileNameInput" type="text" maxlength="20" placeholder="Spielername" oninput="updateProfilePreview()" onkeydown="handleProfileNameKeydown(event)">
+      </div>
+      <div class="setting-group">
+        <div class="setting-group-title">Avatar</div>
+        <div class="avatar-grid" id="avatarGrid"></div>
+      </div>
+      <button class="btn-primary" onclick="saveProfile()">Profil speichern</button>
+    </div>
+  </div>
+</div>
+
 <!-- GAME OVER MODAL -->
 <div class="modal-overlay" id="gameOverModal">
   <div class="modal" id="gameOverContent"></div>
@@ -1093,16 +1206,18 @@ const THEMES = [
   { id: 'midnight', label: 'Nacht', colors: ['#0d0d1f','#8b5cf6'] },
   { id: 'forest', label: 'Wald', colors: ['#101a14','#22c55e'] },
 ];
+const AVATARS = ['🎲','🦊','🐻','🐼','🐸','🐙','🐵','🐯','🐧','🐱','🐰','🦁'];
 
 // ===== GAME STATE =====
 let settings = { rolls: 3, timerEnabled: true, timerSeconds: 30, theme: 'dark' };
-let playerData = { level: 0, xp: 0, bestScore: 0, games: [] }; // games: [{score, time}]
+let playerData = { name: 'Spieler', avatar: '🎲', level: 0, xp: 0, bestScore: 0, games: [] }; // games: [{score, time}]
 
 let gameState = null;
 let timerInterval = null;
 let elapsedInterval = null;
 let gameStartTime = 0;
 let turnTimeLeft = 0;
+let profileDraft = null;
 
 const CATEGORIES = [
   // upper
@@ -1130,12 +1245,18 @@ function loadData() {
     const d = JSON.parse(raw);
     if (d.settings) settings = { ...settings, ...d.settings };
     if (d.playerData) playerData = { ...playerData, ...d.playerData };
+    playerData.name = normalizePlayerName(playerData.name);
+    if (!AVATARS.includes(playerData.avatar)) playerData.avatar = AVATARS[0];
   } catch(e) {}
 }
 function saveData() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ settings, playerData }));
   } catch(e) {}
+}
+
+function normalizePlayerName(name) {
+  return (name || '').trim().slice(0, 20) || 'Spieler';
 }
 
 // ===== XP / LEVEL =====
@@ -1678,6 +1799,70 @@ function openStats() {
   openOverlay('statsOverlay');
 }
 
+// ===== PROFILE =====
+function renderAvatarGrid() {
+  const grid = document.getElementById('avatarGrid');
+  if (!grid) return;
+  grid.innerHTML = AVATARS.map(avatar => `
+    <button class="avatar-option${profileDraft && profileDraft.avatar === avatar ? ' active' : ''}" onclick="selectAvatar('${avatar}')" aria-label="Avatar ${avatar}">
+      ${avatar}
+    </button>
+  `).join('');
+}
+
+function selectAvatar(avatar) {
+  if (!profileDraft) profileDraft = { name: playerData.name, avatar: playerData.avatar };
+  profileDraft.avatar = avatar;
+  renderAvatarGrid();
+  updateProfilePreview();
+}
+
+function updateProfilePreview() {
+  const input = document.getElementById('profileNameInput');
+  const previewName = document.getElementById('profilePreviewName');
+  const previewAvatar = document.getElementById('profilePreviewAvatar');
+  if (!input || !previewName || !previewAvatar) return;
+  previewName.textContent = normalizePlayerName(input.value);
+  previewAvatar.textContent = (profileDraft && profileDraft.avatar) || playerData.avatar || '🎲';
+}
+
+function openProfileEditor(e) {
+  if (e) e.stopPropagation();
+  profileDraft = { name: playerData.name || 'Spieler', avatar: playerData.avatar || '🎲' };
+  const input = document.getElementById('profileNameInput');
+  if (input) input.value = profileDraft.name;
+  renderAvatarGrid();
+  updateProfilePreview();
+  openOverlay('profileOverlay');
+  setTimeout(() => {
+    if (input) input.focus();
+  }, 0);
+}
+
+function closeProfileEditor() {
+  profileDraft = null;
+  closeOverlay('profileOverlay');
+}
+
+function handleProfileOverlayClick(e) {
+  if (e.target.id === 'profileOverlay') closeProfileEditor();
+}
+
+function handleProfileNameKeydown(e) {
+  if (e.key === 'Enter') saveProfile();
+  if (e.key === 'Escape') closeProfileEditor();
+}
+
+function saveProfile() {
+  const input = document.getElementById('profileNameInput');
+  playerData.name = normalizePlayerName(input ? input.value : playerData.name);
+  playerData.avatar = profileDraft && AVATARS.includes(profileDraft.avatar) ? profileDraft.avatar : AVATARS[0];
+  profileDraft = null;
+  saveData();
+  updateHomeUI();
+  closeOverlay('profileOverlay');
+}
+
 // ===== UI HELPERS =====
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1692,6 +1877,8 @@ function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 function updateHomeUI() {
+  document.getElementById('homeAvatar').textContent = playerData.avatar || '🎲';
+  document.getElementById('homePlayerName').textContent = playerData.name || 'Spieler';
   document.getElementById('homeLvl').textContent = playerData.level;
   document.getElementById('homeXP').textContent = playerData.xp;
   document.getElementById('homeXPBar').style.width = xpPercent() + '%';
