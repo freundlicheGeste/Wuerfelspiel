@@ -1,0 +1,23 @@
+Audio: Gewonnen, Würfel-Sound, Kniffel
+
+
+
+
+
+
+
+Zum XP-System: Es ist gerade ziemlich geradlinig. 
+Die benötigte XP für das nächste Level berechnet sich als 
+100 + level * 50, siehe [index.html:1263]. Das heißt:
+
+Level 0 -> 1 braucht 100 XP
+Level 1 -> 2 braucht 150 XP
+Level 2 -> 3 braucht 200 XP
+Level 3 -> 4 braucht 250 XP
+Nach jedem Spiel bekommst du Math.floor(score / 2) XP, 
+also die Hälfte deines Scores abgerundet, siehe [index.html:1607]. 
+addXP() addiert diese XP und zieht bei jedem Level-Up die aktuelle 
+Schwelle ab, bis du unter der nächsten Schwelle liegst, siehe [index.html:1264]. 
+Beispiel: Du bist Level 0 mit 80 XP und machst 60 XP Gewinn. 
+Dann hast du 140 XP, levelst einmal auf 1, und es bleiben 40 XP Rest im neuen Level. 
+Die Fortschrittsanzeige ist dann current_xp / xpForLevel(current_level), also etwa auf Level 1: 40 / 150.
