@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Kniffel</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== THEME VARIABLES ===== */
+:root {
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --font: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+/* DARK THEME (default) */
+[data-theme="dark"] {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --bg4: #222230;
+  --surface: #16161f;
+  --surface2: #1e1e2a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0f8;
+  --text2: #9090b0;
+  --text3: #5a5a7a;
+  --accent: #5b8dee;
+  --accent2: #7ba3ff;
+  --accent-glow: rgba(91,141,238,0.25);
+  --green: #34c77b;
+  --green-bg: rgba(52,199,123,0.12);
+  --orange: #ff9f3e;
+  --orange-bg: rgba(255,159,62,0.12);
+  --red: #ff5a5a;
+  --red-bg: rgba(255,90,90,0.12);
+  --gold: #ffd166;
+  --gold-bg: rgba(255,209,102,0.12);
+  --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --dice-bg: #1e1e2a;
+  --dice-border: rgba(255,255,255,0.1);
+  --dice-dot: #f0f0f8;
+  --held-bg: rgba(91,141,238,0.15);
+  --held-border: rgba(91,141,238,0.5);
+}
+
+/* LIGHT THEME */
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg2: #ffffff;
+  --bg3: #f0f0f5;
+  --bg4: #e8e8ef;
+  --surface: #ffffff;
+  --surface2: #f8f8fc;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.12);
+  --text: #1a1a2e;
+  --text2: #5a5a7a;
+  --text3: #9090b0;
+  --accent: #2563eb;
+  --accent2: #3b82f6;
+  --accent-glow: rgba(37,99,235,0.15);
+  --green: #16a34a;
+  --green-bg: rgba(22,163,74,0.1);
+  --orange: #ea6c00;
+  --orange-bg: rgba(234,108,0,0.1);
+  --red: #dc2626;
+  --red-bg: rgba(220,38,38,0.1);
+  --gold: #d97706;
+  --gold-bg: rgba(217,119,6,0.1);
+  --shadow: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --dice-bg: #ffffff;
+  --dice-border: rgba(0,0,0,0.12);
+  --dice-dot: #1a1a2e;
+  --held-bg: rgba(37,99,235,0.08);
+  --held-border: rgba(37,99,235,0.4);
+}
+
+/* MIDNIGHT THEME */
+[data-theme="midnight"] {
+  --bg: #060612;
+  --bg2: #0d0d1f;
+  --bg3: #13132a;
+  --bg4: #1a1a35;
+  --surface: #10102a;
+  --surface2: #16163a;
+  --border: rgba(120,100,255,0.08);
+  --border2: rgba(120,100,255,0.15);
+  --text: #e8e8ff;
+  --text2: #8080cc;
+  --text3: #4a4a88;
+  --accent: #8b5cf6;
+  --accent2: #a78bfa;
+  --accent-glow: rgba(139,92,246,0.3);
+  --green: #4ade80;
+  --green-bg: rgba(74,222,128,0.1);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,0.1);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.1);
+  --gold: #fbbf24;
+  --gold-bg: rgba(251,191,36,0.1);
+  --shadow: 0 8px 32px rgba(0,0,0,0.7);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --dice-bg: #16163a;
+  --dice-border: rgba(120,100,255,0.2);
+  --dice-dot: #e8e8ff;
+  --held-bg: rgba(139,92,246,0.15);
+  --held-border: rgba(139,92,246,0.5);
+}
+
+/* FOREST THEME */
+[data-theme="forest"] {
+  --bg: #0a110d;
+  --bg2: #101a14;
+  --bg3: #16241b;
+  --bg4: #1e2e22;
+  --surface: #131f17;
+  --surface2: #1a2a1e;
+  --border: rgba(80,200,100,0.08);
+  --border2: rgba(80,200,100,0.15);
+  --text: #e0f0e6;
+  --text2: #70a880;
+  --text3: #3d6a4a;
+  --accent: #22c55e;
+  --accent2: #4ade80;
+  --accent-glow: rgba(34,197,94,0.25);
+  --green: #4ade80;
+  --green-bg: rgba(74,222,128,0.1);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,0.1);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.1);
+  --gold: #fbbf24;
+  --gold-bg: rgba(251,191,36,0.1);
+  --shadow: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --dice-bg: #1a2a1e;
+  --dice-border: rgba(80,200,100,0.15);
+  --dice-dot: #e0f0e6;
+  --held-bg: rgba(34,197,94,0.12);
+  --held-border: rgba(34,197,94,0.45);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+button { font-family: var(--font); cursor: pointer; border: none; background: none; color: inherit; }
+input { font-family: var(--font); }
+
+/* ===== LAYOUT ===== */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  display: none;
+  flex-direction: column;
+  min-height: 100dvh;
+  animation: fadeIn 0.3s ease;
+}
+.screen.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ===== HOME SCREEN ===== */
+#home-screen {
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px 24px;
+  background: var(--bg);
+}
+.home-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.home-logo-dice {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+.home-logo-die {
+  width: 44px;
+  height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+.home-logo-die svg { width: 28px; height: 28px; }
+.home-title {
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -1.5px;
+  color: var(--text);
+}
+.home-subtitle {
+  font-size: 14px;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+}
+.home-player-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.home-avatar {
+  width: 52px;
+  height: 52px;
+  background: var(--accent-glow);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.home-player-info { flex: 1; }
+.home-player-level { font-size: 12px; color: var(--text3); margin-bottom: 2px; }
+.home-player-name { font-size: 17px; font-weight: 600; }
+.home-player-xp { font-size: 12px; color: var(--accent); margin-top: 2px; }
+.home-xp-bar {
+  height: 4px;
+  background: var(--bg4);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.home-xp-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.home-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-radius: var(--radius);
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  transition: opacity var(--transition), transform var(--transition), background var(--transition);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.btn-primary:active { opacity: 0.85; transform: scale(0.98); }
+.btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  width: 100%;
+  transition: background var(--transition), transform var(--transition);
+}
+.btn-secondary:active { background: var(--bg4); transform: scale(0.98); }
+.home-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+}
+.home-row .btn-secondary { flex: 1; }
+
+/* ===== GAME SCREEN ===== */
+#game-screen {
+  flex-direction: column;
+  flex: 1;
+}
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.game-header-left { display: flex; align-items: center; gap: 10px; }
+.header-back {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.header-back:active { background: var(--bg4); }
+.header-title { font-size: 17px; font-weight: 600; }
+.game-timer {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text2);
+  background: var(--surface);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition: color var(--transition);
+}
+.game-timer.urgent { color: var(--red); border-color: var(--red); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+.game-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* SCORECARD (left) */
+.scorecard {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  background: var(--bg2);
+  scrollbar-width: none;
+}
+.scorecard::-webkit-scrollbar { display: none; }
+.score-section {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.score-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+  padding: 6px 14px 4px;
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background var(--transition);
+  border-radius: 0;
+  position: relative;
+  gap: 8px;
+}
+.score-row:hover { background: var(--bg3); }
+.score-row.available { background: var(--green-bg); cursor: pointer; }
+.score-row.available:hover { background: rgba(52,199,123,0.2); }
+.score-row.filled { opacity: 0.7; cursor: default; }
+.score-row.filled:hover { background: none; }
+.score-row.total-row {
+  background: var(--bg3);
+  cursor: default;
+  pointer-events: none;
+}
+.score-row.bonus-row {
+  background: var(--gold-bg);
+  cursor: default;
+  pointer-events: none;
+}
+.score-row-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.score-dice-icon {
+  flex-shrink: 0;
+  display: flex;
+  gap: 2px;
+}
+.score-dice-icon svg { width: 12px; height: 12px; }
+.score-name {
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.score-row.total-row .score-name,
+.score-row.bonus-row .score-name { font-weight: 600; font-size: 12px; }
+.score-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  min-width: 28px;
+  text-align: right;
+}
+.score-row.available .score-value { color: var(--green); }
+.score-row.bonus-row .score-value { color: var(--gold); }
+
+/* RIGHT: DICE + CONTROLS */
+.game-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* DICE AREA */
+.dice-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 16px;
+  gap: 20px;
+  position: relative;
+}
+.active-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+.die {
+  width: 72px;
+  height: 72px;
+  background: var(--dice-bg);
+  border: 1.5px solid var(--dice-border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  user-select: none;
+}
+.die:active { transform: scale(0.93); }
+.die.held {
+  background: var(--held-bg);
+  border-color: var(--held-border);
+  box-shadow: 0 0 0 2px var(--held-border), 0 4px 16px rgba(0,0,0,0.2);
+}
+.die.rolling {
+  animation: rollDie 0.5s ease;
+}
+.die svg { width: 48px; height: 48px; pointer-events: none; }
+@keyframes rollDie {
+  0% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-15deg) scale(1.05); }
+  40% { transform: rotate(20deg) scale(0.95); }
+  60% { transform: rotate(-10deg) scale(1.02); }
+  80% { transform: rotate(8deg) scale(0.98); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.die.held::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 50%;
+  font-size: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 18px;
+  text-align: center;
+}
+
+.held-dice-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.held-dice-label {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.held-dice {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  min-height: 52px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.die-small {
+  width: 48px;
+  height: 48px;
+  background: var(--held-bg);
+  border: 1.5px solid var(--held-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+  box-shadow: 0 0 0 1.5px var(--held-border);
+}
+.die-small svg { width: 32px; height: 32px; }
+.die-small:active { transform: scale(0.92); }
+
+/* GAME CONTROLS */
+.game-controls {
+  padding: 12px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+.roll-btn {
+  background: var(--green);
+  color: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  transition: opacity var(--transition), transform var(--transition);
+  box-shadow: 0 4px 20px rgba(52,199,123,0.25);
+  letter-spacing: 0.3px;
+}
+.roll-btn:active { opacity: 0.85; transform: scale(0.98); }
+.roll-btn:disabled {
+  background: var(--bg4);
+  color: var(--text3);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 1;
+}
+.control-row {
+  display: flex;
+  gap: 8px;
+}
+.ctrl-btn {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-size: 12px;
+  color: var(--text2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: background var(--transition), transform var(--transition);
+}
+.ctrl-btn:active { background: var(--bg4); transform: scale(0.97); }
+.ctrl-btn svg { width: 18px; height: 18px; }
+
+/* SCORE TOOLTIP */
+.score-tooltip {
+  position: fixed;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  z-index: 200;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.score-tooltip.visible { opacity: 1; transform: none; }
+
+/* ===== OVERLAY PANELS ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 0 0 40px;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.overlay.open .panel { transform: none; }
+.panel-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-title { font-size: 19px; font-weight: 600; }
+.panel-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--bg4);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2);
+  transition: background var(--transition);
+}
+.panel-close:active { background: var(--border2); }
+.panel-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Settings */
+.setting-group { display: flex; flex-direction: column; gap: 12px; }
+.setting-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+.setting-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.setting-icon { color: var(--text3); flex-shrink: 0; }
+.setting-info { flex: 1; }
+.setting-label { font-size: 15px; font-weight: 500; }
+.setting-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.toggle {
+  display: flex;
+  background: var(--bg4);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+.toggle-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: background var(--transition), color var(--transition);
+}
+.toggle-btn.active {
+  background: var(--accent);
+  color: white;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg4);
+  border-radius: 8px;
+  padding: 4px;
+}
+.stepper-btn {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--text2);
+  transition: background var(--transition);
+}
+.stepper-btn:active { background: var(--bg3); }
+.stepper-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.stepper-val {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  min-width: 36px;
+  text-align: center;
+}
+
+/* Theme selector */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.theme-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.theme-swatch-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  transition: border-color var(--transition), transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.theme-swatch.active .theme-swatch-circle {
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+.theme-swatch-label { font-size: 11px; color: var(--text3); }
+.theme-swatch:active .theme-swatch-circle { transform: scale(0.95); }
+
+/* Stats panel */
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.stat-card-title { font-size: 12px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+.stat-card-value { font-size: 28px; font-weight: 600; font-family: var(--font-mono); }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.stat-mini { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+.stat-mini-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+.stat-mini-val { font-size: 18px; font-weight: 600; font-family: var(--font-mono); }
+.level-bar-wrap { background: var(--bg4); border-radius: 4px; height: 6px; overflow: hidden; margin-top: 8px; }
+.level-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s; }
+
+/* Highscore table */
+.hs-table { width: 100%; border-collapse: collapse; }
+.hs-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); text-align: left; padding: 6px 12px; border-bottom: 1px solid var(--border); }
+.hs-table td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid var(--border); }
+.hs-table tr:last-child td { border-bottom: none; }
+.hs-rank { font-family: var(--font-mono); color: var(--text3); font-size: 13px; }
+.hs-gold .hs-rank { color: var(--gold); }
+.hs-score { font-family: var(--font-mono); font-weight: 600; }
+.hs-time { font-family: var(--font-mono); color: var(--text2); }
+.empty-state { text-align: center; color: var(--text3); padding: 32px; font-size: 14px; }
+
+/* ===== ROUND END MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-icon { font-size: 56px; }
+.modal-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.modal-score { font-size: 52px; font-weight: 700; font-family: var(--font-mono); color: var(--accent); letter-spacing: -2px; }
+.modal-score-label { font-size: 13px; color: var(--text3); margin-top: -12px; }
+.modal-xp { 
+  background: var(--gold-bg);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 15px;
+  color: var(--gold);
+  font-weight: 600;
+}
+.modal-actions { display: flex; flex-direction: column; gap: 10px; }
+.modal-breakdown {
+  text-align: left;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modal-bd-row { display: flex; justify-content: space-between; font-size: 13px; }
+.modal-bd-row span:first-child { color: var(--text2); }
+.modal-bd-row span:last-child { font-family: var(--font-mono); font-weight: 500; }
+.modal-bd-total { border-top: 1px solid var(--border); padding-top: 6px; margin-top: 2px; font-weight: 600; }
+
+/* ===== CONFETTI ===== */
+.confetti-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+  overflow: hidden;
+}
+.confetto {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  from { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== RESPONSIVE: MOBILE ===== */
+@media (max-width: 640px) {
+  .scorecard { width: 160px; }
+  .score-dice-icon { display: none; }
+  .score-name { font-size: 12px; }
+  .score-value { font-size: 12px; }
+  .die { width: 60px; height: 60px; border-radius: 14px; }
+  .die svg { width: 40px; height: 40px; }
+  .die-small { width: 42px; height: 42px; }
+  .die-small svg { width: 28px; height: 28px; }
+  .home-title { font-size: 34px; }
+}
+
+@media (max-width: 380px) {
+  .scorecard { width: 140px; }
+  .die { width: 52px; height: 52px; }
+  .die svg { width: 34px; height: 34px; }
+}
+
+/* Scrollbar style */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HOME SCREEN -->
+<div id="home-screen" class="screen active">
+  <div class="home-logo">
+    <div class="home-logo-dice" id="homeDiceDisplay"></div>
+    <div class="home-title">Kniffel</div>
+    <div class="home-subtitle">Würfelglück trifft Strategie</div>
+  </div>
+  <div class="home-player-card">
+    <div class="home-avatar">🎲</div>
+    <div class="home-player-info">
+      <div class="home-player-level" id="homeLvlLabel">Level <span id="homeLvl">0</span></div>
+      <div class="home-player-name">Spieler</div>
+      <div class="home-player-xp"><span id="homeXP">0</span> XP</div>
+      <div class="home-xp-bar"><div class="home-xp-fill" id="homeXPBar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="home-actions">
+    <button class="btn-primary" onclick="startGame()">Spiel starten</button>
+    <div class="home-row">
+      <button class="btn-secondary" onclick="openStats()">📊 Statistik</button>
+      <button class="btn-secondary" onclick="openSettings()">⚙️ Einstellungen</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="screen">
+  <div class="game-header">
+    <div class="game-header-left">
+      <button class="header-back" onclick="confirmPause()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="header-title">Kniffel</div>
+    </div>
+    <div class="game-timer" id="gameTimer">0:00</div>
+  </div>
+  <div class="game-body">
+    <!-- SCORECARD -->
+    <div class="scorecard" id="scorecard"></div>
+    <!-- RIGHT SIDE -->
+    <div class="game-right">
+      <div class="dice-area">
+        <div class="active-dice" id="activeDice"></div>
+        <div class="held-dice-area">
+          <div class="held-dice-label">Zur Seite gelegt</div>
+          <div class="held-dice" id="heldDice"></div>
+        </div>
+      </div>
+      <div class="game-controls">
+        <button class="roll-btn" id="rollBtn" onclick="rollDice()">Würfeln</button>
+        <div class="control-row">
+          <button class="ctrl-btn" onclick="openStats()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Statistik
+          </button>
+          <button class="ctrl-btn" onclick="openSettings()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Einstellungen
+          </button>
+          <button class="ctrl-btn" onclick="confirmPause()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            Pause
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div class="overlay" id="settingsOverlay" onclick="handleOverlayClick(event,'settingsOverlay')">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-header">
+      <div class="panel-title">Einstellungen</div>
+      <button class="panel-close" onclick="closeOverlay('settingsOverlay')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="panel-body">
+      <!-- Würfe -->
+      <div class="setting-group">
+        <div class="setting-group-title">Spielregeln</div>
+        <div class="setting-row">
+          <div class="setting-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="4"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>
+          </div>
+          <div class="setting-info">
+            <div class="setting-label">Würfe pro Zug</div>
+            <div class="setting-sub">Min. 1 | Max. 5</div>
+          </div>
+          <div class="stepper">
+            <button class="stepper-btn" id="rollsDown" onclick="changeSetting('rolls',-1)">−</button>
+            <div class="stepper-val" id="rollsVal">3</div>
+            <button class="stepper-btn" id="rollsUp" onclick="changeSetting('rolls',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- Zeit -->
+      <div class="setting-group">
+        <div class="setting-group-title">Zeitlimit</div>
+        <div class="setting-row">
+          <div class="setting-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="setting-info">
+            <div class="setting-label">Zeitlimit</div>
+          </div>
+          <div class="toggle">
+            <button class="toggle-btn" id="timeLimitOff" onclick="setTimerLimit(false)">Aus</button>
+            <button class="toggle-btn active" id="timeLimitOn" onclick="setTimerLimit(true)">An</button>
+          </div>
+        </div>
+        <div class="setting-row" id="zugzeitRow">
+          <div class="setting-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.07-4.49"/></svg>
+          </div>
+          <div class="setting-info">
+            <div class="setting-label">Zugzeit (Sek.)</div>
+            <div class="setting-sub">Min. 3 | Max. 120</div>
+          </div>
+          <div class="stepper">
+            <button class="stepper-btn" id="timeDown" onclick="changeSetting('time',-5)">−</button>
+            <div class="stepper-val" id="timeVal">30</div>
+            <button class="stepper-btn" id="timeUp" onclick="changeSetting('time',5)">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- Theme -->
+      <div class="setting-group">
+        <div class="setting-group-title">Erscheinungsbild</div>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS OVERLAY -->
+<div class="overlay" id="statsOverlay" onclick="handleOverlayClick(event,'statsOverlay')">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="panel-header">
+      <div class="panel-title">Statistik</div>
+      <button class="panel-close" onclick="closeOverlay('statsOverlay')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="panel-body" id="statsBody"></div>
+  </div>
+</div>
+
+<!-- GAME OVER MODAL -->
+<div class="modal-overlay" id="gameOverModal">
+  <div class="modal" id="gameOverContent"></div>
+</div>
+
+<!-- PAUSE MODAL -->
+<div class="modal-overlay" id="pauseModal">
+  <div class="modal">
+    <div class="modal-icon">⏸️</div>
+    <div class="modal-title">Pause</div>
+    <div style="color:var(--text2);font-size:14px;">Möchtest du das Spiel beenden?</div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="resumeGame()">Weiterspielen</button>
+      <button class="btn-secondary" onclick="quitGame()">Spiel beenden</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<script>
+// ===== STORAGE KEY =====
+const STORAGE_KEY = 'wfs_v1_storage';
+
+// ===== THEMES =====
+const THEMES = [
+  { id: 'dark', label: 'Dunkel', colors: ['#111118','#5b8dee'] },
+  { id: 'light', label: 'Hell', colors: ['#f5f5f7','#2563eb'] },
+  { id: 'midnight', label: 'Nacht', colors: ['#0d0d1f','#8b5cf6'] },
+  { id: 'forest', label: 'Wald', colors: ['#101a14','#22c55e'] },
+];
+
+// ===== GAME STATE =====
+let settings = { rolls: 3, timerEnabled: true, timerSeconds: 30, theme: 'dark' };
+let playerData = { level: 0, xp: 0, bestScore: 0, games: [] }; // games: [{score, time}]
+
+let gameState = null;
+let timerInterval = null;
+let elapsedInterval = null;
+let gameStartTime = 0;
+let turnTimeLeft = 0;
+
+const CATEGORIES = [
+  // upper
+  { id: 'ones', label: 'Einser', section: 'upper', diceVal: 1 },
+  { id: 'twos', label: 'Zweier', section: 'upper', diceVal: 2 },
+  { id: 'threes', label: 'Dreier', section: 'upper', diceVal: 3 },
+  { id: 'fours', label: 'Vierer', section: 'upper', diceVal: 4 },
+  { id: 'fives', label: 'Fünfer', section: 'upper', diceVal: 5 },
+  { id: 'sixes', label: 'Sechser', section: 'upper', diceVal: 6 },
+  // lower
+  { id: 'three_of_a_kind', label: 'Dreierpasch', section: 'lower' },
+  { id: 'four_of_a_kind', label: 'Viererpasch', section: 'lower' },
+  { id: 'full_house', label: 'Full House', section: 'lower' },
+  { id: 'sm_straight', label: 'Kleine Straße', section: 'lower' },
+  { id: 'lg_straight', label: 'Große Straße', section: 'lower' },
+  { id: 'yahtzee', label: 'KNIFFEL', section: 'lower' },
+  { id: 'chance', label: 'Chance', section: 'lower' },
+];
+
+// ===== LOAD / SAVE =====
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.settings) settings = { ...settings, ...d.settings };
+    if (d.playerData) playerData = { ...playerData, ...d.playerData };
+  } catch(e) {}
+}
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ settings, playerData }));
+  } catch(e) {}
+}
+
+// ===== XP / LEVEL =====
+function xpForLevel(lvl) { return 100 + lvl * 50; }
+function addXP(xp) {
+  playerData.xp += xp;
+  while (playerData.xp >= xpForLevel(playerData.level)) {
+    playerData.xp -= xpForLevel(playerData.level);
+    playerData.level++;
+  }
+}
+function xpPercent() {
+  return Math.round((playerData.xp / xpForLevel(playerData.level)) * 100);
+}
+
+// ===== DICE SVG =====
+function dieSVG(val, color='currentColor') {
+  const dots = {
+    1: [[50,50]],
+    2: [[25,25],[75,75]],
+    3: [[25,25],[50,50],[75,75]],
+    4: [[25,25],[75,25],[25,75],[75,75]],
+    5: [[25,25],[75,25],[50,50],[25,75],[75,75]],
+    6: [[25,25],[75,25],[25,50],[75,50],[25,75],[75,75]],
+  };
+  const d = dots[val] || dots[1];
+  const circles = d.map(([cx,cy]) => `<circle cx="${cx}" cy="${cy}" r="8" fill="${color}"/>`).join('');
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${circles}</svg>`;
+}
+
+function dieSmallSVG(val) {
+  const dots = {
+    1:[[50,50]],2:[[25,25],[75,75]],3:[[25,25],[50,50],[75,75]],
+    4:[[25,25],[75,25],[25,75],[75,75]],5:[[25,25],[75,25],[50,50],[25,75],[75,75]],
+    6:[[25,25],[75,25],[25,50],[75,50],[25,75],[75,75]],
+  };
+  const d = dots[val]||dots[1];
+  return `<svg viewBox="0 0 100 100"><g>${d.map(([cx,cy])=>`<circle cx="${cx}" cy="${cy}" r="9" fill="var(--dice-dot)"/>`).join('')}</g></svg>`;
+}
+
+function scorecardDiceSVG(val) {
+  const dots={1:[[50,50]],2:[[30,30],[70,70]],3:[[25,25],[50,50],[75,75]],
+    4:[[28,28],[72,28],[28,72],[72,72]],5:[[28,28],[72,28],[50,50],[28,72],[72,72]],
+    6:[[28,28],[72,28],[28,50],[72,50],[28,72],[72,72]]};
+  const d=dots[val]||dots[1];
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="90" height="90" rx="14" fill="none" stroke="var(--text3)" stroke-width="8"/>${d.map(([cx,cy])=>`<circle cx="${cx}" cy="${cy}" r="9" fill="var(--text3)"/>`).join('')}</svg>`;
+}
+
+// ===== SCORING =====
+function scoreCategory(id, dice) {
+  const counts = {};
+  dice.forEach(d => counts[d] = (counts[d]||0)+1);
+  const vals = Object.values(counts);
+  const sum = dice.reduce((a,b)=>a+b,0);
+
+  switch(id) {
+    case 'ones': return dice.filter(d=>d===1).reduce((a,b)=>a+b,0);
+    case 'twos': return dice.filter(d=>d===2).reduce((a,b)=>a+b,0);
+    case 'threes': return dice.filter(d=>d===3).reduce((a,b)=>a+b,0);
+    case 'fours': return dice.filter(d=>d===4).reduce((a,b)=>a+b,0);
+    case 'fives': return dice.filter(d=>d===5).reduce((a,b)=>a+b,0);
+    case 'sixes': return dice.filter(d=>d===6).reduce((a,b)=>a+b,0);
+    case 'three_of_a_kind': return vals.some(v=>v>=3) ? sum : 0;
+    case 'four_of_a_kind': return vals.some(v=>v>=4) ? sum : 0;
+    case 'full_house': return (vals.includes(3)&&vals.includes(2)) ? 25 : 0;
+    case 'sm_straight': {
+      const u=[...new Set(dice)].sort((a,b)=>a-b);
+      let best=1,cur=1;
+      for(let i=1;i<u.length;i++){if(u[i]===u[i-1]+1){cur++;best=Math.max(best,cur);}else{cur=1;}}
+      return best>=4?30:0;
+    }
+    case 'lg_straight': {
+      const u=[...new Set(dice)].sort((a,b)=>a-b);
+      let best=1,cur=1;
+      for(let i=1;i<u.length;i++){if(u[i]===u[i-1]+1){cur++;best=Math.max(best,cur);}else{cur=1;}}
+      return best>=5?40:0;
+    }
+    case 'yahtzee': return vals.includes(5)?50:0;
+    case 'chance': return sum;
+    default: return 0;
+  }
+}
+
+function calcUpperSum(scores) {
+  return ['ones','twos','threes','fours','fives','sixes']
+    .reduce((s,id)=>s+(scores[id]??0),0);
+}
+function calcBonus(scores) { return calcUpperSum(scores)>=63?35:0; }
+function calcTotal(scores) {
+  const upper = calcUpperSum(scores);
+  const bonus = upper>=63?35:0;
+  const lower = ['three_of_a_kind','four_of_a_kind','full_house','sm_straight','lg_straight','yahtzee','chance']
+    .reduce((s,id)=>s+(scores[id]??0),0);
+  return upper+bonus+lower;
+}
+
+// ===== GAME START =====
+function initNewGame() {
+  gameState = {
+    scores: {},
+    dice: [],
+    held: [],
+    rollsLeft: settings.rolls,
+    rollsUsed: 0,
+    currentDice: [],
+    heldDice: [],
+    turnActive: false,
+    gameOver: false,
+  };
+  gameStartTime = Date.now();
+}
+
+function startGame() {
+  initNewGame();
+  showScreen('game-screen');
+  renderScorecard();
+  renderDice();
+  updateRollBtn();
+  startElapsedTimer();
+  if (settings.timerEnabled) startTurnTimer();
+}
+
+// ===== ELAPSED TIMER =====
+function startElapsedTimer() {
+  clearInterval(elapsedInterval);
+  elapsedInterval = setInterval(() => {
+    const secs = Math.floor((Date.now() - gameStartTime) / 1000);
+    const m = Math.floor(secs/60), s = secs%60;
+    const el = document.getElementById('gameTimer');
+    if (el && !settings.timerEnabled) el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }, 1000);
+}
+
+// ===== TURN TIMER =====
+function startTurnTimer() {
+  clearInterval(timerInterval);
+  turnTimeLeft = settings.timerSeconds;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    turnTimeLeft--;
+    updateTimerDisplay();
+    if (turnTimeLeft <= 0) {
+      clearInterval(timerInterval);
+      autoScore();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('gameTimer');
+  if (!el) return;
+  if (settings.timerEnabled) {
+    const m = Math.floor(turnTimeLeft/60), s = turnTimeLeft%60;
+    el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    el.className = 'game-timer' + (turnTimeLeft <= 5 ? ' urgent' : '');
+  }
+}
+
+function autoScore() {
+  if (!gameState || gameState.gameOver) return;
+  if (gameState.rollsLeft > 0) rollDice();
+}
+
+// ===== ROLL DICE =====
+function rollDice() {
+  if (!gameState || gameState.rollsLeft <= 0 || gameState.gameOver) return;
+
+  // Move non-held active dice to new values, held dice stay
+  const numDice = 5;
+  if (gameState.currentDice.length === 0) {
+    // First roll
+    gameState.currentDice = Array.from({length: numDice}, () => Math.ceil(Math.random()*6));
+    gameState.heldDice = [];
+  } else {
+    // Re-roll non-held
+    gameState.currentDice = gameState.currentDice.map((d,i) =>
+      gameState.held.includes(i) ? d : Math.ceil(Math.random()*6)
+    );
+  }
+
+  gameState.rollsLeft--;
+  gameState.rollsUsed++;
+
+  renderDice(true);
+  renderScorecard();
+  updateRollBtn();
+  if (settings.timerEnabled) startTurnTimer();
+}
+
+// ===== HOLD DICE =====
+function toggleHold(idx) {
+  if (!gameState || gameState.currentDice.length === 0) return;
+  if (gameState.rollsLeft <= 0) return;
+  const pos = gameState.held.indexOf(idx);
+  if (pos === -1) gameState.held.push(idx);
+  else gameState.held.splice(pos,1);
+  renderDice();
+}
+
+// ===== RENDER DICE =====
+function renderDice(animate=false) {
+  const active = document.getElementById('activeDice');
+  const held = document.getElementById('heldDice');
+  if (!gameState) { active.innerHTML=''; held.innerHTML=''; return; }
+
+  if (gameState.currentDice.length === 0) {
+    active.innerHTML = `<div style="color:var(--text3);font-size:14px;text-align:center;padding:20px">Würfle, um zu beginnen</div>`;
+    held.innerHTML = '';
+    return;
+  }
+
+  // Show non-held in active area, held in held area
+  active.innerHTML = '';
+  held.innerHTML = '';
+
+  gameState.currentDice.forEach((val, i) => {
+    const isHeld = gameState.held.includes(i);
+    if (!isHeld) {
+      const d = document.createElement('div');
+      d.className = 'die' + (animate ? ' rolling' : '');
+      d.innerHTML = dieSmallSVG(val);
+      d.style.width = '72px';
+      d.style.height = '72px';
+      if (animate) d.style.animationDelay = (i * 0.08) + 's';
+      d.addEventListener('click', () => toggleHold(i));
+      d.addEventListener('touchstart', (e) => { e.preventDefault(); toggleHold(i); }, { passive: false });
+      active.appendChild(d);
+    }
+  });
+
+  // Held dice shown in held area
+  gameState.currentDice.forEach((val, i) => {
+    if (gameState.held.includes(i)) {
+      const d = document.createElement('div');
+      d.className = 'die-small';
+      d.innerHTML = dieSmallSVG(val);
+      d.addEventListener('click', () => toggleHold(i));
+      d.addEventListener('touchstart', (e) => { e.preventDefault(); toggleHold(i); }, { passive: false });
+      held.appendChild(d);
+    }
+  });
+
+  if (held.children.length === 0) {
+    held.innerHTML = `<div style="color:var(--text3);font-size:12px">Tippe auf einen Würfel zum Aufheben</div>`;
+  }
+}
+
+// ===== RENDER SCORECARD =====
+function renderScorecard() {
+  const sc = document.getElementById('scorecard');
+  if (!sc || !gameState) return;
+
+  const allDice = gameState.currentDice;
+  const canScore = allDice.length > 0;
+
+  let html = '';
+
+  // Upper section
+  html += `<div class="score-section"><div class="score-section-title">Obere Sektion</div>`;
+  ['ones','twos','threes','fours','fives','sixes'].forEach(id => {
+    const cat = CATEGORIES.find(c=>c.id===id);
+    const filled = id in gameState.scores;
+    const possible = canScore && !filled ? scoreCategory(id, allDice) : null;
+    const displayVal = filled ? gameState.scores[id] : (possible !== null ? possible : '');
+    const cls = filled ? 'filled' : (possible !== null ? 'available' : '');
+    html += `<div class="score-row ${cls}" data-cat="${id}" onclick="clickScore('${id}')">
+      <div class="score-row-left">
+        <div class="score-dice-icon">${scorecardDiceSVG(cat.diceVal)}</div>
+        <div class="score-name">${cat.label}</div>
+      </div>
+      <div class="score-value">${displayVal}</div>
+    </div>`;
+  });
+  const upperSum = calcUpperSum(gameState.scores);
+  html += `<div class="score-row total-row"><div class="score-row-left"><div class="score-name">Summe</div></div><div class="score-value">${upperSum}</div></div>`;
+  const bonus = calcBonus(gameState.scores);
+  html += `<div class="score-row bonus-row"><div class="score-row-left"><div class="score-name">Bonus (+35 ab 63)</div></div><div class="score-value">${bonus > 0 ? bonus : upperSum < 63 ? `${upperSum}/63` : ''}</div></div>`;
+  html += `</div>`;
+
+  // Lower section
+  html += `<div class="score-section"><div class="score-section-title">Untere Sektion</div>`;
+  ['three_of_a_kind','four_of_a_kind','full_house','sm_straight','lg_straight','yahtzee','chance'].forEach(id => {
+    const cat = CATEGORIES.find(c=>c.id===id);
+    const filled = id in gameState.scores;
+    const possible = canScore && !filled ? scoreCategory(id, allDice) : null;
+    const displayVal = filled ? gameState.scores[id] : (possible !== null ? possible : '');
+    const cls = filled ? 'filled' : (possible !== null ? 'available' : '');
+    html += `<div class="score-row ${cls}" data-cat="${id}" onclick="clickScore('${id}')">
+      <div class="score-row-left"><div class="score-name">${cat.label}</div></div>
+      <div class="score-value">${displayVal}</div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // Total
+  const total = calcTotal(gameState.scores);
+  html += `<div class="score-section"><div class="score-row total-row"><div class="score-row-left"><div class="score-name" style="font-weight:700">Gesamt</div></div><div class="score-value" style="font-weight:700;font-size:15px;color:var(--accent)">${total}</div></div></div>`;
+
+  sc.innerHTML = html;
+}
+
+function clickScore(id) {
+  if (!gameState || gameState.gameOver) return;
+  if (id in gameState.scores) return;
+  if (gameState.currentDice.length === 0) return;
+
+  const val = scoreCategory(id, gameState.currentDice);
+  registerScore(id, val);
+}
+
+function registerScore(id, val) {
+  if (!gameState || gameState.gameOver) return;
+  gameState.scores[id] = val;
+  clearInterval(timerInterval);
+  gameState.currentDice = [];
+  gameState.held = [];
+  gameState.rollsLeft = settings.rolls;
+  gameState.rollsUsed = 0;
+
+  renderDice();
+  renderScorecard();
+  updateRollBtn();
+
+  if (Object.keys(gameState.scores).length >= 13) {
+    endGame();
+  } else {
+    if (settings.timerEnabled) startTurnTimer();
+    else {
+      const el = document.getElementById('gameTimer');
+      if (el) { el.textContent = formatElapsed(); el.className = 'game-timer'; }
+    }
+  }
+}
+
+function formatElapsed() {
+  const secs = Math.floor((Date.now() - gameStartTime)/1000);
+  return `${Math.floor(secs/60)}:${(secs%60).toString().padStart(2,'0')}`;
+}
+
+function updateRollBtn() {
+  const btn = document.getElementById('rollBtn');
+  if (!btn || !gameState) return;
+  const nextRoll = Math.min(settings.rolls, settings.rolls - gameState.rollsLeft + 1);
+  if (gameState.rollsLeft <= 0) {
+    btn.textContent = 'Keine Würfe mehr übrig';
+    btn.disabled = true;
+  } else if (gameState.currentDice.length === 0) {
+    btn.textContent = `Würfeln (${nextRoll}/${settings.rolls})`;
+    btn.disabled = false;
+  } else {
+    btn.textContent = `Nochmal würfeln (${nextRoll}/${settings.rolls})`;
+    btn.disabled = false;
+  }
+}
+
+// ===== GAME OVER =====
+function endGame() {
+  clearInterval(timerInterval);
+  clearInterval(elapsedInterval);
+  gameState.gameOver = true;
+
+  const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+  const score = calcTotal(gameState.scores);
+  const upper = calcUpperSum(gameState.scores);
+  const bonus = calcBonus(gameState.scores);
+  const lower = score - upper - bonus;
+
+  const xpEarned = Math.floor(score / 2);
+  addXP(xpEarned);
+  if (score > playerData.bestScore) playerData.bestScore = score;
+  playerData.games.push({ score, time: elapsed });
+  if (playerData.games.length > 50) playerData.games = playerData.games.slice(-50);
+  saveData();
+
+  const isNew = playerData.bestScore === score;
+  showGameOver(score, upper, bonus, lower, xpEarned, elapsed, isNew);
+}
+
+function showGameOver(score, upper, bonus, lower, xpEarned, elapsed, isNew) {
+  const m = Math.floor(elapsed/60), s = elapsed%60;
+  const timeStr = `${m}:${s.toString().padStart(2,'0')}`;
+  const emoji = score >= 300 ? '🏆' : score >= 200 ? '🎯' : score >= 100 ? '🎲' : '🎰';
+
+  document.getElementById('gameOverContent').innerHTML = `
+    <div class="modal-icon">${emoji}${isNew ? '⭐' : ''}</div>
+    <div class="modal-title">${isNew ? 'Neuer Rekord!' : 'Spiel vorbei'}</div>
+    <div class="modal-score">${score}</div>
+    <div class="modal-score-label">Punkte ${isNew ? '— Neuer Rekord!' : ''}</div>
+    <div class="modal-xp">+${xpEarned} XP verdient • Stufe ${playerData.level}</div>
+    <div class="modal-breakdown">
+      <div class="modal-bd-row"><span>Obere Sektion</span><span>${upper}</span></div>
+      <div class="modal-bd-row"><span>Bonus</span><span>${bonus}</span></div>
+      <div class="modal-bd-row"><span>Untere Sektion</span><span>${lower}</span></div>
+      <div class="modal-bd-row"><span>Spielzeit</span><span>${timeStr}</span></div>
+      <div class="modal-bd-row modal-bd-total"><span>Gesamt</span><span>${score}</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="restartGame()">Nochmal spielen</button>
+      <button class="btn-secondary" onclick="goHome()">Zum Menü</button>
+    </div>
+  `;
+  openModal('gameOverModal');
+  if (score >= 200) spawnConfetti();
+}
+
+function restartGame() {
+  closeModal('gameOverModal');
+  startGame();
+}
+function goHome() {
+  closeModal('gameOverModal');
+  showScreen('home-screen');
+  updateHomeUI();
+}
+
+// ===== PAUSE =====
+function confirmPause() {
+  if (gameState && !gameState.gameOver) {
+    clearInterval(timerInterval);
+    openModal('pauseModal');
+  } else {
+    showScreen('home-screen');
+    updateHomeUI();
+  }
+}
+function resumeGame() {
+  closeModal('pauseModal');
+  if (settings.timerEnabled && gameState && !gameState.gameOver) startTurnTimer();
+}
+function quitGame() {
+  closeModal('pauseModal');
+  clearInterval(timerInterval);
+  clearInterval(elapsedInterval);
+  gameState = null;
+  showScreen('home-screen');
+  updateHomeUI();
+}
+
+// ===== SETTINGS =====
+function changeSetting(type, delta) {
+  if (type === 'rolls') {
+    settings.rolls = Math.max(1, Math.min(5, settings.rolls + delta));
+    document.getElementById('rollsVal').textContent = settings.rolls;
+    document.getElementById('rollsDown').disabled = settings.rolls <= 1;
+    document.getElementById('rollsUp').disabled = settings.rolls >= 5;
+    if (!gameState || gameState.currentDice.length === 0) {
+      const rollBtn = document.getElementById('rollBtn');
+      if (rollBtn) rollBtn.textContent = `Würfeln (1/${settings.rolls})`;
+    }
+  } else if (type === 'time') {
+    settings.timerSeconds = Math.max(3, Math.min(120, settings.timerSeconds + delta));
+    document.getElementById('timeVal').textContent = settings.timerSeconds;
+    document.getElementById('timeDown').disabled = settings.timerSeconds <= 3;
+    document.getElementById('timeUp').disabled = settings.timerSeconds >= 120;
+  }
+  saveData();
+}
+
+function setTimerLimit(on) {
+  settings.timerEnabled = on;
+  document.getElementById('timeLimitOn').classList.toggle('active', on);
+  document.getElementById('timeLimitOff').classList.toggle('active', !on);
+  document.getElementById('zugzeitRow').style.opacity = on ? '1' : '0.4';
+  document.getElementById('zugzeitRow').style.pointerEvents = on ? 'auto' : 'none';
+  saveData();
+}
+
+function openSettings() {
+  document.getElementById('rollsVal').textContent = settings.rolls;
+  document.getElementById('timeVal').textContent = settings.timerSeconds;
+  document.getElementById('rollsDown').disabled = settings.rolls <= 1;
+  document.getElementById('rollsUp').disabled = settings.rolls >= 5;
+  document.getElementById('timeDown').disabled = settings.timerSeconds <= 3;
+  document.getElementById('timeUp').disabled = settings.timerSeconds >= 120;
+  setTimerLimit(settings.timerEnabled);
+  renderThemeGrid();
+  openOverlay('settingsOverlay');
+}
+
+function renderThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  grid.innerHTML = THEMES.map(t => `
+    <div class="theme-swatch${settings.theme===t.id?' active':''}" onclick="setTheme('${t.id}')">
+      <div class="theme-swatch-circle" style="background:linear-gradient(135deg,${t.colors[0]} 50%,${t.colors[1]} 50%)"></div>
+      <div class="theme-swatch-label">${t.label}</div>
+    </div>
+  `).join('');
+}
+
+function setTheme(id) {
+  settings.theme = id;
+  document.documentElement.setAttribute('data-theme', id);
+  saveData();
+  renderThemeGrid();
+}
+
+// ===== STATS =====
+function openStats() {
+  const body = document.getElementById('statsBody');
+  const games = playerData.games;
+  const avgScore = games.length ? Math.round(games.reduce((s,g)=>s+g.score,0)/games.length) : 0;
+  const avgTime = games.length ? Math.round(games.reduce((s,g)=>s+g.time,0)/games.length) : 0;
+  const at = Math.floor(avgTime/60) + ':' + (avgTime%60).toString().padStart(2,'0');
+
+  const xpNeeded = xpForLevel(playerData.level);
+  const sorted = [...games].sort((a,b)=>b.score-a.score).slice(0,10);
+
+  body.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-card-title">Spieler-Stufe</div>
+      <div class="stat-card-value">Level ${playerData.level}</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:4px">${playerData.xp} / ${xpNeeded} XP</div>
+      <div class="level-bar-wrap"><div class="level-bar-fill" style="width:${xpPercent()}%"></div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-mini"><div class="stat-mini-label">Spiele</div><div class="stat-mini-val">${games.length}</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Ø Score</div><div class="stat-mini-val">${avgScore}</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Ø Zeit</div><div class="stat-mini-val">${at}</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Bestleistung</div>
+      <div class="stat-card-value" style="color:var(--gold)">${playerData.bestScore}</div>
+    </div>
+    <div>
+      <div class="setting-group-title" style="margin-bottom:10px">Bestenliste</div>
+      ${sorted.length === 0
+        ? `<div class="empty-state">Noch keine Spiele gespielt</div>`
+        : `<table class="hs-table"><thead><tr><th>#</th><th>Punkte</th><th>Zeit</th></tr></thead><tbody>
+          ${sorted.map((g,i) => {
+            const m=Math.floor(g.time/60),s=g.time%60;
+            return `<tr class="${i===0?'hs-gold':''}">
+              <td class="hs-rank">${i===0?'🏆':i+1}</td>
+              <td class="hs-score">${g.score}</td>
+              <td class="hs-time">${m}:${s.toString().padStart(2,'0')}</td>
+            </tr>`;
+          }).join('')}</tbody></table>`
+      }
+    </div>
+  `;
+  openOverlay('statsOverlay');
+}
+
+// ===== UI HELPERS =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+function handleOverlayClick(e, id) { if (e.target.id === id) closeOverlay(id); }
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function updateHomeUI() {
+  document.getElementById('homeLvl').textContent = playerData.level;
+  document.getElementById('homeXP').textContent = playerData.xp;
+  document.getElementById('homeXPBar').style.width = xpPercent() + '%';
+}
+
+// ===== CONFETTI =====
+function spawnConfetti() {
+  const wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  const colors = ['var(--accent)','var(--green)','var(--gold)','var(--orange)'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetto';
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${colors[i%colors.length]};
+      animation-duration:${2+Math.random()*2}s;
+      animation-delay:${Math.random()*0.5}s;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    wrap.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+// ===== HOME LOGO DICE =====
+function renderHomeDice() {
+  const vals = [1,2,3,4,5,6];
+  const wrap = document.getElementById('homeDiceDisplay');
+  if (!wrap) return;
+  wrap.innerHTML = vals.slice(0,6).map(v => `
+    <div class="home-logo-die">
+      ${dieSmallSVG(v)}
+    </div>
+  `).join('');
+}
+
+// ===== INIT =====
+function init() {
+  loadData();
+  document.documentElement.setAttribute('data-theme', settings.theme);
+  const rollBtn = document.getElementById('rollBtn');
+  if (rollBtn) rollBtn.textContent = `Würfeln (1/${settings.rolls})`;
+  updateHomeUI();
+  renderHomeDice();
+
+  // Register SW
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+}
+
+init();
+</script>
+</body>
+</html>
