@@ -1,4 +1,23 @@
+erledigt:
+held-dice-label nur anzeigen, wenn gespielt wird
+text kann markiert werden, wie die feld namen oder das kniffel label in der header bar, deaktivieren
+die in klammern stehenden werte hinter full. house, kleine straße usw mit einer opacity von 0.4 anzeigen
+5 züge spiel fixen. es gehen trotz anzeige nur 3 (wenn man die settings im spielfeld ändert), wenn man
+zurück zum start screen geht und wieder neu startet, werden die einstellungen übernommen. also settings
+menü ausgrauen, sobald ein spiel gestartet wurde, nur wenn noch nicht gewürfelt wurde erlauben
+panel-handle und close button hover accent farbe
+
+
+
 Audio: Gewonnen, Würfel-Sound, Kniffel
+
+option hinzufügen, ob der timer direkt beim klicken auf "spiel starten" den zähler/timer startet oder
+erst beim ersten würfeln
+localstorage auf die letzten 50 spiele limitieren für durchschnittszeit und score
+highscore listen tab einbauen, highscores für 3 roles und 5 roles, 1 roles usw trennen
+kniffel bonus in den optionen, wenn man 2 kniffel bekommt
+
+
 
 
 

@@ -55,6 +55,11 @@
       --dice-dot: #f0f0f8;
       --held-bg: rgba(91, 141, 238, 0.15);
       --held-border: rgba(91, 141, 238, 0.5);
+      --highlight-bg: rgba(91, 141, 238, 0.13);
+      --highlight-hover: rgba(91, 141, 238, 0.22);
+      --highlight-color: #7ba3ff;
+      --highlight-pending-bg: rgba(91, 141, 238, 0.24);
+      --highlight-pending-border: rgba(91, 141, 238, 0.65);
     }
 
     /* LIGHT THEME */
@@ -88,6 +93,11 @@
       --dice-dot: #1a1a2e;
       --held-bg: rgba(37, 99, 235, 0.08);
       --held-border: rgba(37, 99, 235, 0.4);
+      --highlight-bg: rgba(37, 99, 235, 0.08);
+      --highlight-hover: rgba(37, 99, 235, 0.14);
+      --highlight-color: #2563eb;
+      --highlight-pending-bg: rgba(37, 99, 235, 0.15);
+      --highlight-pending-border: rgba(37, 99, 235, 0.55);
     }
 
     /* MIDNIGHT THEME */
@@ -121,6 +131,11 @@
       --dice-dot: #e8e8ff;
       --held-bg: rgba(139, 92, 246, 0.15);
       --held-border: rgba(139, 92, 246, 0.5);
+      --highlight-bg: rgba(139, 92, 246, 0.14);
+      --highlight-hover: rgba(139, 92, 246, 0.24);
+      --highlight-color: #a78bfa;
+      --highlight-pending-bg: rgba(139, 92, 246, 0.26);
+      --highlight-pending-border: rgba(139, 92, 246, 0.65);
     }
 
     /* FOREST THEME */
@@ -154,6 +169,11 @@
       --dice-dot: #e0f0e6;
       --held-bg: rgba(34, 197, 94, 0.12);
       --held-border: rgba(34, 197, 94, 0.45);
+      --highlight-bg: rgba(34, 197, 94, 0.13);
+      --highlight-hover: rgba(34, 197, 94, 0.22);
+      --highlight-color: #4ade80;
+      --highlight-pending-bg: rgba(34, 197, 94, 0.25);
+      --highlight-pending-border: rgba(34, 197, 94, 0.6);
     }
 
     /* SLATE THEME — dark but lighter/warmer */
@@ -187,6 +207,11 @@
       --dice-dot: #f2f2fa;
       --held-bg: rgba(96, 165, 250, 0.14);
       --held-border: rgba(96, 165, 250, 0.48);
+      --highlight-bg: rgba(96, 165, 250, 0.13);
+      --highlight-hover: rgba(96, 165, 250, 0.22);
+      --highlight-color: #93c5fd;
+      --highlight-pending-bg: rgba(96, 165, 250, 0.24);
+      --highlight-pending-border: rgba(96, 165, 250, 0.6);
     }
 
     /* CHARCOAL THEME — dark warm grey, slightly lighter */
@@ -220,6 +245,11 @@
       --dice-dot: #f4eeec;
       --held-bg: rgba(249, 112, 102, 0.14);
       --held-border: rgba(249, 112, 102, 0.48);
+      --highlight-bg: rgba(249, 112, 102, 0.13);
+      --highlight-hover: rgba(249, 112, 102, 0.22);
+      --highlight-color: #fca5a5;
+      --highlight-pending-bg: rgba(249, 112, 102, 0.24);
+      --highlight-pending-border: rgba(249, 112, 102, 0.62);
     }
 
     /* SAND THEME — warm light, not too bright */
@@ -253,6 +283,11 @@
       --dice-dot: #2a1f0e;
       --held-bg: rgba(180, 83, 9, 0.08);
       --held-border: rgba(180, 83, 9, 0.38);
+      --highlight-bg: rgba(180, 83, 9, 0.1);
+      --highlight-hover: rgba(180, 83, 9, 0.18);
+      --highlight-color: #d97706;
+      --highlight-pending-bg: rgba(180, 83, 9, 0.2);
+      --highlight-pending-border: rgba(180, 83, 9, 0.55);
     }
 
     /* STONE THEME — cool light grey-blue, softer than pure white */
@@ -286,6 +321,11 @@
       --dice-dot: #18202e;
       --held-bg: rgba(59, 91, 219, 0.08);
       --held-border: rgba(59, 91, 219, 0.38);
+      --highlight-bg: rgba(59, 91, 219, 0.09);
+      --highlight-hover: rgba(59, 91, 219, 0.16);
+      --highlight-color: #4c6ef5;
+      --highlight-pending-bg: rgba(59, 91, 219, 0.18);
+      --highlight-pending-border: rgba(59, 91, 219, 0.55);
     }
 
     /* ===== RESET & BASE ===== */
@@ -596,6 +636,8 @@
     .header-title {
       font-size: 17px;
       font-weight: 600;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .game-timer {
@@ -659,6 +701,8 @@
       letter-spacing: 1px;
       color: var(--text3);
       padding: 6px 14px 4px;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .score-row {
@@ -678,23 +722,25 @@
     }
 
     .score-row.available {
-      background: var(--green-bg);
+      background: var(--highlight-bg);
       cursor: pointer;
     }
 
     .score-row.available:hover {
-      background: rgba(52, 199, 123, 0.2);
+      background: var(--highlight-hover);
     }
 
-    /* Das Standardmäßige Grün überschreiben */
-    .score-row.available {
-      background: var(--gold-bg);
+    /* Pending (first tap on touch) — warten auf Bestätigung */
+    .score-row.pending {
+      background: var(--highlight-pending-bg);
+      outline: 2px solid var(--highlight-pending-border);
+      outline-offset: -2px;
       cursor: pointer;
+      z-index: 1;
     }
 
-    /* Das Standardmäßige Grün überschreiben */
-    .score-row.available:hover {
-      background: rgba(255, 166, 41, 0.509);
+    .score-row.pending .score-name {
+      font-weight: 600;
     }
 
     .score-row.filled {
@@ -743,6 +789,13 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .score-name-meta {
+      font-size: 11px;
+      opacity: 0.62;
     }
 
     .score-row.total-row .score-name,
@@ -760,9 +813,10 @@
       text-align: right;
     }
 
-    /* Das Standardmäßige Grün überschreiben */
-    .score-row.available .score-value {
-      color: var(--gold);
+    .score-row.available .score-value,
+    .score-row.pending .score-value {
+      color: var(--highlight-color);
+      font-weight: 600;
     }
 
     .score-row.bonus-row .score-value {
@@ -891,6 +945,13 @@
       color: var(--text3);
       text-transform: uppercase;
       letter-spacing: 0.8px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .held-dice-label.hidden {
+      visibility: hidden;
+      opacity: 0;
     }
 
     .held-dice {
@@ -1064,7 +1125,7 @@
     }
 
     .panel-handle:hover {
-      background: var(--text3);
+      background: color-mix(in srgb, var(--accent), transparent 50%);
     }
 
     /* Expanded hit area for handle */
@@ -1101,7 +1162,7 @@
     }
 
     .panel-close:hover {
-      background: var(--text3);
+      background: color-mix(in srgb, var(--accent), transparent 50%);
     }
 
     .panel-close:active {
@@ -1138,6 +1199,11 @@
       display: flex;
       align-items: center;
       gap: 12px;
+    }
+
+    .setting-row.locked {
+      opacity: 0.45;
+      filter: saturate(0.55);
     }
 
     .setting-icon {
@@ -1775,6 +1841,109 @@
       animation: settle 0.24s ease;
     }
 
+    /* ===== TABLET TOUCH TARGETS (pointer: coarse) ===== */
+    @media (pointer: coarse) {
+      .score-row {
+        padding: 11px 14px;
+        min-height: 46px;
+      }
+
+      .scorecard {
+        width: 210px;
+      }
+
+      .score-name {
+        font-size: 13px;
+      }
+    }
+
+    /* Confirm-Bar — erscheint am unteren Rand der Scorecard auf Touch-Geräten */
+    .scorecard-confirm-bar {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--highlight-pending-bg);
+      border-top: 1.5px solid var(--highlight-pending-border);
+      display: flex;
+      align-items: stretch;
+      z-index: 10;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.22s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s;
+      pointer-events: none;
+    }
+
+    .scorecard-confirm-bar.visible {
+      max-height: 64px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .confirm-bar-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8px 12px;
+      min-width: 0;
+    }
+
+    .confirm-bar-label {
+      font-size: 11px;
+      color: var(--highlight-color);
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .confirm-bar-pts {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--highlight-color);
+    }
+
+    .confirm-bar-btn {
+      padding: 0 18px;
+      background: var(--highlight-color);
+      color: var(--bg);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .confirm-bar-btn:active {
+      opacity: 0.8;
+    }
+
+    .confirm-bar-cancel {
+      padding: 0 14px;
+      background: transparent;
+      color: var(--text3);
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .confirm-bar-cancel:active {
+      color: var(--text2);
+    }
+
     /* Scrollbar style */
     ::-webkit-scrollbar {
       width: 4px;
@@ -1827,25 +1996,25 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="3" />
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 
-    2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 
-    1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 
-    1-4 0v-.09A1.65 1.65 0 0 0 9 
-    19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 
-    2 0 0 1-2.83-2.83l.06-.06A1.65 
-    1.65 0 0 0 4.68 15a1.65 1.65 0 
-    0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 
-    1.65 0 0 0 4.6 9a1.65 1.65 0 0 
-    0-.33-1.82l-.06-.06a2 2 0 0 1 
-    2.83-2.83l.06.06A1.65 1.65 0 0 
-    0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 
-    2 0 0 1 4 0v.09a1.65 1.65 0 0 
-    0 1 1.51 1.65 1.65 0 0 0 
-    1.82-.33l.06-.06a2 2 0 0 
-    1 2.83 2.83l-.06.06A1.65 
-    1.65 0 0 0 19.4 9a1.65 
-    1.65 0 0 0 1.51 1H21a2 
-    2 0 0 1 0 4h-.09a1.65 
-    1.65 0 0 0-1.51 1z" />
+                    2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 
+                    1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 
+                    1-4 0v-.09A1.65 1.65 0 0 0 9 
+                    19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 
+                    2 0 0 1-2.83-2.83l.06-.06A1.65 
+                    1.65 0 0 0 4.68 15a1.65 1.65 0 
+                    0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 
+                    1.65 0 0 0 4.6 9a1.65 1.65 0 0 
+                    0-.33-1.82l-.06-.06a2 2 0 0 1 
+                    2.83-2.83l.06.06A1.65 1.65 0 0 
+                    0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 
+                    2 0 0 1 4 0v.09a1.65 1.65 0 0 
+                    0 1 1.51 1.65 1.65 0 0 0 
+                    1.82-.33l.06-.06a2 2 0 0 
+                    1 2.83 2.83l-.06.06A1.65 
+                    1.65 0 0 0 19.4 9a1.65 
+                    1.65 0 0 0 1.51 1H21a2 
+                    2 0 0 1 0 4h-.09a1.65 
+                    1.65 0 0 0-1.51 1z" />
             </svg>
             Einstellungen
           </button>
@@ -1868,13 +2037,25 @@
       </div>
       <div class="game-body">
         <!-- SCORECARD -->
-        <div class="scorecard" id="scorecard"></div>
+        <div class="scorecard" id="scorecard">
+          <!-- confirm bar injected by JS -->
+          <div class="scorecard-confirm-bar" id="scorecardConfirmBar">
+            <div class="confirm-bar-info">
+              <div class="confirm-bar-label" id="confirmBarLabel">Eintragen</div>
+              <div class="confirm-bar-pts" id="confirmBarPts">0 Punkte</div>
+            </div>
+            <button class="confirm-bar-cancel" onclick="cancelPendingScore()" title="Abbrechen">✕</button>
+            <button class="confirm-bar-btn" onclick="confirmScore()">
+              ✓ Eintragen
+            </button>
+          </div>
+        </div>
         <!-- RIGHT SIDE -->
         <div class="game-right">
           <div class="dice-area">
             <div class="active-dice" id="activeDice"></div>
             <div class="held-dice-area">
-              <div class="held-dice-label">Zur Seite gelegt</div>
+              <div class="held-dice-label hidden" id="heldDiceLabel">Zur Seite gelegt</div>
               <div class="held-dice" id="heldDice"></div>
             </div>
           </div>
@@ -1928,7 +2109,7 @@
         <!-- Würfe -->
         <div class="setting-group">
           <div class="setting-group-title">Spielregeln</div>
-          <div class="setting-row">
+          <div class="setting-row" id="rollsSettingRow">
             <div class="setting-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
                 <rect x="2" y="2" width="20" height="20" rx="4" />
@@ -1950,7 +2131,7 @@
         <!-- Zeit -->
         <div class="setting-group">
           <div class="setting-group-title">Zeitlimit</div>
-          <div class="setting-row">
+          <div class="setting-row" id="timeLimitSettingRow">
             <div class="setting-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
                 <circle cx="12" cy="12" r="10" />
@@ -2190,6 +2371,42 @@
       return (name || '').trim().slice(0, 20) || 'Spieler';
     }
 
+    function hasGameStarted() {
+      return !!(gameState && !gameState.gameOver && gameStartTime > 0);
+    }
+
+    function formatScoreName(label) {
+      return label.replace(/\s*(\([^)]*\))$/, ` <span class="score-name-meta">$1</span>`);
+    }
+
+    function updateHeldDiceLabel() {
+      const label = document.getElementById('heldDiceLabel');
+      if (!label) return;
+      label.classList.toggle('hidden', !hasGameStarted());
+    }
+
+    function syncPregameSettingsToState() {
+      if (!gameState || hasGameStarted() || gameState.currentDice.length > 0) return;
+      gameState.rollsLeft = settings.rolls;
+      gameState.rollsUsed = 0;
+      updateRollBtn();
+    }
+
+    function updateSettingsAvailability() {
+      const locked = hasGameStarted();
+      const ids = ['rollsDown', 'rollsUp', 'timeDown', 'timeUp', 'timeLimitOn', 'timeLimitOff'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = locked;
+      });
+      const rollsRow = document.getElementById('rollsSettingRow');
+      const timeLimitRow = document.getElementById('timeLimitSettingRow');
+      const zugzeitRow = document.getElementById('zugzeitRow');
+      if (rollsRow) rollsRow.classList.toggle('locked', locked);
+      if (timeLimitRow) timeLimitRow.classList.toggle('locked', locked);
+      if (zugzeitRow) zugzeitRow.classList.toggle('locked', locked);
+    }
+
     function getEmptyDicePrompt() {
       if (!gameState) return 'Würfle, um zu beginnen';
       if (gameState.emptyPrompt) return gameState.emptyPrompt;
@@ -2391,6 +2608,7 @@
       pauseStartTime = 0;
       overlayPauseState = null;
       lastTurnPrompt = '';
+      gameStartTime = 0;
 
       gameState = {
         scores: {},
@@ -2402,8 +2620,9 @@
         emptyPrompt: 'Würfle, um zu beginnen',
         turnActive: false,
         gameOver: false,
+        pendingScore: null, // { id, val, label } — touch confirm state
       };
-      gameStartTime = Date.now();
+      // gameStartTime is set on first roll, not here
     }
 
     function startGame() {
@@ -2412,6 +2631,7 @@
       renderScorecard();
       renderDice();
       updateRollBtn();
+      updateHeldDiceLabel();
       // Timer and elapsed clock start on first roll, not here
       const el = document.getElementById('gameTimer');
       if (el) { el.textContent = '–:––'; el.className = 'game-timer'; }
@@ -2456,12 +2676,22 @@
 
     function autoScore() {
       if (!gameState || gameState.gameOver) return;
-      if (gameState.rollsLeft > 0) rollDice(false);
+      cancelPendingScore();
+      // If no dice rolled yet this turn, do nothing (timer expired before first roll)
+      if (gameState.currentDice.length === 0) return;
+      // Force-assign to first unfilled category with its actual score value
+      const avail = CATEGORIES.filter(c => !(c.id in gameState.scores));
+      if (avail.length > 0) {
+        const id = avail[0].id;
+        const val = scoreCategory(id, gameState.currentDice);
+        registerScore(id, val);
+      }
     }
 
     // ===== ROLL DICE =====
     function rollDice(playSound = true) {
       if (!gameState || gameState.rollsLeft <= 0 || gameState.gameOver) return;
+      cancelPendingScore(); // clear any pending selection before rolling
       playRollSound();
 
       const numDice = 5;
@@ -2520,6 +2750,7 @@
         active.innerHTML = `<div class="dice-prompt">${getEmptyDicePrompt()}</div>`;
         held.innerHTML = '';
         _prevHeld = [];
+        updateHeldDiceLabel();
         return;
       }
 
@@ -2534,6 +2765,7 @@
       if (gameState.currentDice.length === 0) {
         active.innerHTML = `<div class="dice-prompt">${getEmptyDicePrompt()}</div>`;
         held.innerHTML = '';
+        updateHeldDiceLabel();
         return;
       }
 
@@ -2579,6 +2811,7 @@
       }
 
       _prevHeld = [...gameState.held];
+      updateHeldDiceLabel();
     }
 
     // ===== RENDER SCORECARD =====
@@ -2586,8 +2819,12 @@
       const sc = document.getElementById('scorecard');
       if (!sc || !gameState) return;
 
+      // Keep confirm bar reference before clearing
+      const confirmBar = document.getElementById('scorecardConfirmBar');
+
       const allDice = gameState.currentDice;
       const canScore = allDice.length > 0;
+      const pendingId = gameState.pendingScore ? gameState.pendingScore.id : null;
 
       let html = '';
 
@@ -2598,7 +2835,8 @@
         const filled = id in gameState.scores;
         const possible = canScore && !filled ? scoreCategory(id, allDice) : null;
         const displayVal = filled ? gameState.scores[id] : (possible !== null ? possible : '');
-        const cls = filled ? 'filled' : (possible !== null ? 'available' : '');
+        const isPending = id === pendingId;
+        const cls = filled ? 'filled' : isPending ? 'pending available' : (possible !== null ? 'available' : '');
         html += `<div class="score-row ${cls}" data-cat="${id}" onclick="clickScore('${id}')">
       <div class="score-row-left">
         <div class="score-dice-icon">${scorecardDiceSVG(cat.diceVal)}</div>
@@ -2620,9 +2858,10 @@
         const filled = id in gameState.scores;
         const possible = canScore && !filled ? scoreCategory(id, allDice) : null;
         const displayVal = filled ? gameState.scores[id] : (possible !== null ? possible : '');
-        const cls = filled ? 'filled' : (possible !== null ? 'available' : '');
+        const isPending = id === pendingId;
+        const cls = filled ? 'filled' : isPending ? 'pending available' : (possible !== null ? 'available' : '');
         html += `<div class="score-row ${cls}" data-cat="${id}" onclick="clickScore('${id}')">
-      <div class="score-row-left"><div class="score-name">${cat.label}</div></div>
+        <div class="score-row-left"><div class="score-name">${formatScoreName(cat.label)}</div></div>
       <div class="score-value">${displayVal}</div>
     </div>`;
       });
@@ -2632,8 +2871,13 @@
       const total = calcTotal(gameState.scores);
       html += `<div class="score-section"><div class="score-row total-row"><div class="score-row-left"><div class="score-name" style="font-weight:700">Gesamt</div></div><div class="score-value" style="font-weight:700;font-size:15px;color:var(--accent)">${total}</div></div></div>`;
 
+      // Insert rows, then re-attach confirm bar at the very bottom (sticky)
       sc.innerHTML = html;
+      if (confirmBar) sc.appendChild(confirmBar);
     }
+
+    // Detect touch-primary devices
+    const isTouchDevice = () => window.matchMedia('(pointer: coarse)').matches;
 
     function clickScore(id) {
       if (!gameState || gameState.gameOver) return;
@@ -2641,23 +2885,71 @@
       if (gameState.currentDice.length === 0) return;
 
       const val = scoreCategory(id, gameState.currentDice);
+      const cat = CATEGORIES.find(c => c.id === id);
+
+      if (isTouchDevice()) {
+        // Two-tap confirm on touch: first tap = pending, second tap same field = confirm
+        if (gameState.pendingScore && gameState.pendingScore.id === id) {
+          confirmScore();
+        } else {
+          gameState.pendingScore = { id, val, label: cat ? cat.label : id };
+          renderConfirmBar();
+          renderScorecard(); // re-render to show .pending class
+        }
+      } else {
+        // Mouse: single click confirms immediately
+        registerScore(id, val);
+      }
+    }
+
+    function confirmScore() {
+      if (!gameState || !gameState.pendingScore) return;
+      const { id, val } = gameState.pendingScore;
+      gameState.pendingScore = null;
+      renderConfirmBar();
       registerScore(id, val);
+    }
+
+    function cancelPendingScore() {
+      if (!gameState || !gameState.pendingScore) return;
+      gameState.pendingScore = null;
+      renderConfirmBar();
+      renderScorecard();
+    }
+
+    function renderConfirmBar() {
+      const bar = document.getElementById('scorecardConfirmBar');
+      const label = document.getElementById('confirmBarLabel');
+      const pts = document.getElementById('confirmBarPts');
+      if (!bar) return;
+
+      if (gameState && gameState.pendingScore) {
+        const { label: catLabel, val } = gameState.pendingScore;
+        label.textContent = catLabel;
+        pts.textContent = val === 1 ? '1 Punkt' : `${val} Punkte`;
+        bar.classList.add('visible');
+      } else {
+        bar.classList.remove('visible');
+      }
     }
 
     function registerScore(id, val) {
       if (!gameState || gameState.gameOver) return;
       gameState.scores[id] = val;
+      gameState.pendingScore = null;
       clearInterval(timerInterval);
       gameState.currentDice = [];
       gameState.held = [];
       gameState.rollsLeft = settings.rolls;
       gameState.rollsUsed = 0;
       gameState.emptyPrompt = '';
-      _prevHeld = []; // reset fly-animation tracking for new turn
+      _prevHeld = [];
 
+      renderConfirmBar();
       renderDice();
       renderScorecard();
       updateRollBtn();
+      updateHeldDiceLabel();
 
       if (Object.keys(gameState.scores).length >= 13) {
         endGame();
@@ -2787,6 +3079,8 @@
       closeModal('pauseModal');
       clearInterval(timerInterval);
       clearInterval(elapsedInterval);
+      if (gameState) gameState.pendingScore = null;
+      gameStartTime = 0;
       gameState = null;
       showScreen('home-screen');
       updateHomeUI();
@@ -2794,15 +3088,13 @@
 
     // ===== SETTINGS =====
     function changeSetting(type, delta) {
+      if (hasGameStarted()) return;
       if (type === 'rolls') {
         settings.rolls = Math.max(1, Math.min(5, settings.rolls + delta));
         document.getElementById('rollsVal').textContent = settings.rolls;
         document.getElementById('rollsDown').disabled = settings.rolls <= 1;
         document.getElementById('rollsUp').disabled = settings.rolls >= 5;
-        if (!gameState || gameState.currentDice.length === 0) {
-          const rollBtn = document.getElementById('rollBtn');
-          if (rollBtn) rollBtn.textContent = `Würfeln (1/${settings.rolls})`;
-        }
+        syncPregameSettingsToState();
       } else if (type === 'time') {
         settings.timerSeconds = Math.max(10, Math.min(60, settings.timerSeconds + delta));
         document.getElementById('timeVal').textContent = settings.timerSeconds;
@@ -2810,15 +3102,22 @@
         document.getElementById('timeUp').disabled = settings.timerSeconds >= 60;
       }
       saveData();
+      updateSettingsAvailability();
     }
 
-    function setTimerLimit(on) {
-      settings.timerEnabled = on;
+    function applyTimerLimitUI(on) {
       document.getElementById('timeLimitOn').classList.toggle('active', on);
       document.getElementById('timeLimitOff').classList.toggle('active', !on);
       document.getElementById('zugzeitRow').style.opacity = on ? '1' : '0.4';
       document.getElementById('zugzeitRow').style.pointerEvents = on ? 'auto' : 'none';
+    }
+
+    function setTimerLimit(on) {
+      if (hasGameStarted()) return;
+      settings.timerEnabled = on;
+      applyTimerLimitUI(on);
       saveData();
+      updateSettingsAvailability();
     }
 
     function openSettings() {
@@ -2829,7 +3128,8 @@
       document.getElementById('rollsUp').disabled = settings.rolls >= 5;
       document.getElementById('timeDown').disabled = settings.timerSeconds <= 10;
       document.getElementById('timeUp').disabled = settings.timerSeconds >= 60;
-      setTimerLimit(settings.timerEnabled);
+      applyTimerLimitUI(settings.timerEnabled);
+      updateSettingsAvailability();
       renderThemeGrid();
       openOverlay('settingsOverlay');
     }
