@@ -1,11 +1,15 @@
-package de.wuerfelspiel.kniffel
+package de.freundlichegeste.kniffel
 
 import android.annotation.SuppressLint
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.content.ContentValues
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
@@ -25,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var assetLoader: WebViewAssetLoader
     private var fileChooserCallback: ValueCallback<Array<Uri>>? = null
+    private val soundHandler = Handler(Looper.getMainLooper())
+    private var toneGenerator: ToneGenerator? = null
 
     private val filePickerLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -119,6 +125,32 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
+    override fun onDestroy() {
+        soundHandler.removeCallbacksAndMessages(null)
+        toneGenerator?.release()
+        toneGenerator = null
+        super.onDestroy()
+    }
+
+    private fun toneGenerator(): ToneGenerator {
+        return toneGenerator ?: ToneGenerator(AudioManager.STREAM_MUSIC, 85).also {
+            toneGenerator = it
+        }
+    }
+
+    private fun playToneSequence(sequence: List<Pair<Int, Int>>, gapMs: Int = 40) {
+        var offsetMs = 0L
+        sequence.forEach { (tone, duration) ->
+            soundHandler.postDelayed({
+                try {
+                    toneGenerator().startTone(tone, duration)
+                } catch (_: RuntimeException) {
+                }
+            }, offsetMs)
+            offsetMs += duration + gapMs
+        }
+    }
+
     inner class AndroidBridge {
         @android.webkit.JavascriptInterface
         fun saveBackup(json: String, fileName: String): Boolean {
@@ -154,6 +186,43 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
                 false
+            }
+        }
+
+        @android.webkit.JavascriptInterface
+        fun playSound(type: String?) {
+            val soundType = type?.lowercase() ?: return
+            runOnUiThread {
+                when (soundType) {
+                    "roll" -> playToneSequence(
+                        listOf(
+                            ToneGenerator.TONE_CDMA_KEYPAD_VOLUME_KEY_LITE to 40,
+                            ToneGenerator.TONE_CDMA_KEYPAD_VOLUME_KEY_LITE to 40,
+                            ToneGenerator.TONE_CDMA_KEYPAD_VOLUME_KEY_LITE to 55
+                        ),
+                        gapMs = 24
+                    )
+
+                    "kniffel" -> playToneSequence(
+                        listOf(
+                            ToneGenerator.TONE_PROP_ACK to 90,
+                            ToneGenerator.TONE_PROP_BEEP2 to 95,
+                            ToneGenerator.TONE_SUP_CONFIRM to 120,
+                            ToneGenerator.TONE_PROP_ACK to 140
+                        ),
+                        gapMs = 36
+                    )
+
+                    "gameover" -> playToneSequence(
+                        listOf(
+                            ToneGenerator.TONE_PROP_ACK to 110,
+                            ToneGenerator.TONE_PROP_BEEP2 to 110,
+                            ToneGenerator.TONE_SUP_CONFIRM to 150,
+                            ToneGenerator.TONE_PROP_ACK to 180
+                        ),
+                        gapMs = 42
+                    )
+                }
             }
         }
     }

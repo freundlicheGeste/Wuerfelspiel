@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "de.wuerfelspiel.kniffel"
+    namespace = "de.freundlichegeste.kniffel"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "de.wuerfelspiel.kniffel"
+        applicationId = "de.freundlichegeste.kniffel"
         minSdk = 29
         targetSdk = 34
         versionCode = 1

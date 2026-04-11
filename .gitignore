@@ -3,5 +3,6 @@ android/app/src/main/res/.DS_Store
 android/.gradle/
 android/build/
 android/app/build/
+android/app/release/
 android/local.properties
 .DS_Store

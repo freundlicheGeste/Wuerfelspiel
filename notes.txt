@@ -1,21 +1,14 @@
-ANDROID:
-FIX: Audio wird nicht abgespielt
-
-WEB:
-Da Querformat, muss gescrollt werden
+Portrait Handy untere 3 Tasten nicht wählbar, passiert nichts
+Landscape Handy Inhalt muss gescrollt werden
 
 
-Audio: Gewonnen, Würfel-Sound, Kniffel
-option hinzufügen, ob der timer direkt beim klicken auf "spiel starten" den zähler/timer startet oder
-erst beim ersten würfeln
-highscore listen tab einbauen, highscores für 3 roles und 5 roles, 1 roles usw trennen
-kniffel bonus in den optionen, wenn man 2 kniffel bekommt
+Highscore im Header muss noch angepasst werden.
+Momentan egal welche Kategorie, höchste Punktzahl wird angezeigt
 
 
-localstorage auf die letzten 50 spiele limitieren für durchschnittszeit und score
-
-
-
+2 Spieler-Modus / Bot-Modus
+Wieder Tastenkombinationen für den Web-Browser hinzufügen:
+Leertaste = Würfeln, ESC = Pause, Enter = Settings, S = Statistiken
 
 
 

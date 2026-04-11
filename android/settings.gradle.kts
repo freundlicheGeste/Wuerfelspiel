@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KniffelTablet"
+rootProject.name = "Kniffel"
 include(":app")
